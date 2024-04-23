@@ -1,6 +1,6 @@
 # 🤖 UniGuideBot 🎓
 
-![Image](assets/bgsmall.png)
+![Image](static/bgsmall.png)
 
 UniGuideBot is a Flask-based chatbot application designed to provide information about university services and resources. It's one of my tasks as an Artificial Intelligence Intern at the virtual internship from [TeknoSoft](https://www.linkedin.com/company/teknosoft/?lipi=urn%3Ali%3Apage%3Ad_flagship3_search_srp_all%3BRwo7ne%2B7QICcRh9Ck7Jclw%3D%3D).
 
