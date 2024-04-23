@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Welcome to UniGuideBot!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png" href="./static/favicon.png">
+</head>
+<body>
+    <img src="./static/bgsmall.png" alt="Image" class="mobile-image">
+    <div class="container">
+        <div id="title-container">
+            <h1 class="title" id="main-title">Welcome to UniGuideBot!</h1>
+        </div>
+        <div>
+            <h2 class="language-title">Select Language</h2>
+            <form id="chat-form" class="language-form">
+                <div class="language-selection">
+                    <select name="lang">
+                        <option value="en">English</option>
+                        <option value="ar">العربية</option>
+                    </select>
+                </div>
+                <input type="text" name="user_input" id="user-input" placeholder="Type your message...">
+                <h2 class="intent-title">OR Select from the Dropdown</h2>
+                <div class="intent-selection">
+                    <select name="intent" id="intent-dropdown">
+                        <option value="" disabled selected>Select a Question</option>
+                        <!-- Intent options will be dynamically populated here -->
+                    </select>
+                    
+                </div>
+                <input type="submit" id="submit-btn" value="Send">
+            </form>
+            <div id="chat-container" class="chat-container"></div>
+        </div>
+    </div>
+    <div id="watermark">Made by: <a href="https://www.linkedin.com/in/abdelrahmaneldaba" id="name">Abdelrahman Eldaba</a></div>
+
+
+    <script>
+        // Function to alternate between titles
+        function alternateTitles() {
+            const titles = ["Welcome to UniGuideBot!", "Learn more about our University"];
+            let index = 0;
+            setInterval(() => {
+                const title = titles[index];
+                const container = document.getElementById("title-container");
+                container.innerHTML = '<h1 class="title" id="main-title">' + title.split('').map((char, index) => '<span style="animation-delay: ' + (0.1 * index) + 's">' + char + '</span>').join('') + '</h1>';
+                index = (index + 1) % titles.length;
+            }, 2000); // Change title every 3 seconds
+        }
+
+        // Call the function to start alternating titles
+        alternateTitles();
+
+
+        // Function to fetch intents from the server
+        function fetchIntents() {
+            fetch("/intents")
+            .then(response => response.json())
+            .then(data => {
+                const dropdown = document.getElementById("intent-dropdown");
+                const intents = data.intents_en.concat(data.intents_ar);
+                intents.forEach(intent => {
+                    const option = document.createElement('option');
+                    option.value = intent;
+                    option.textContent = intent;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error("Error fetching intents:", error));
+        }
+
+        // Call fetchIntents() when the page loads
+        window.onload = function() {
+            fetchIntents();
+        };
+
+        // Event listener for dropdown change
+        document.getElementById("intent-dropdown").addEventListener("change", function() {
+            // Get the selected option value
+            const selectedIntent = this.value;
+            
+            // Insert the selected intent into the input field and clear any existing data
+            document.getElementById("user-input").value = selectedIntent;
+        });
+
+        document.getElementById("chat-form").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent form submission
+            var formData = new FormData(this);
+
+            // Fetch response from server
+            fetch("/chat", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Append question and response with "User:" and "UniGuideBot:" prefixes
+                var chatContainer = document.getElementById("chat-container");
+                var userMessage = formData.get("user_input");
+                var language = formData.get("lang");
+                var intent = formData.get("intent");
+                var questionMessage = '<div class="chat-message user"><span style="color: red; font-weight: bold;">User:</span> ' + userMessage + '</div>';
+
+                var chatEntry = '<div class="chat-entry">' + questionMessage + '</div>';
+                chatContainer.innerHTML += chatEntry;
+
+                // Scroll to bottom of container
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Display response letter by letter
+                displayResponse(data);
+                
+                // Clear user input
+                document.getElementById("user-input").value = '';
+            })
+            .catch(error => console.error("Error:", error));
+        });
+
+        // Function to display response letter by letter
+        function displayResponse(response) {
+            const responseContainer = document.createElement('div');
+            responseContainer.classList.add('chat-message', 'bot');
+            document.getElementById('chat-container').appendChild(responseContainer);
+            
+            let index = 0;
+            const intervalId = setInterval(() => {
+                if (index <= response.length) {
+                    responseContainer.innerHTML = '<span style="color: red; font-weight: bold;">UniGuideBot:</span> ' + response.slice(0, index);
+
+                    index++;
+                } else {
+                    clearInterval(intervalId);
+                }
+            }, 30);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    background-image: url('./background.png');
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    color: #fff;
+}
+#title-container {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#title {
+    display: inline-block;
+    opacity: 0;
+    animation: appear 3s forwards;
+}
+@keyframes appear {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: auto;
+        opacity: 1;
+    }
+}
+#watermark {
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+}
+#name {
+    color: white;
+    text-decoration: underline;
+}
+.container {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.title {
+    text-align: center;
+    color: red;
+}
+.language-title, .intent-title {
+    text-align: center;
+    margin: 10px auto;
+    margin: 0;
+    color: #666;
+    font-size: 18px;
+}
+.language-form {
+    text-align: center;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.language-selection, .intent-selection {
+    margin: 10px auto;
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+}
+.language-selection select, .intent-selection select {
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 18px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+}
+.intent-title {
+    font-size: 14px;
+    margin: 10px auto;
+}
+.intent-selection select {
+    font-size: 12px;
+}
+input[type="text"] {
+    width: 90%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    color: #000;
+}
+input[type="submit"] {
+    width: 30%;
+    padding: 10px 20px;
+    margin: 0px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+input[type="submit"]:hover {
+    background-color: #0056b3;
+
+}
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 250px;
+    overflow-y: auto;
+}
+.chat-message {
+    margin-bottom: 10px;
+    word-wrap: break-word;
+}
+
+.chat-message.user {
+    color: blue;
+}
+
+.chat-message.bot {
+    color: green;
+    margin-top: 0;
+}
+
+.mobile-image {
+    display: none;
+}
+
+@media only screen and (max-width: 768px) {
+    .mobile-image {
+        display: block;
+        width: 90%;
+        height: auto;
+        margin: 15px auto;
+    }
+    .title {
+        font-size: 18px;
+    }
+    #watermark {
+        font-size: 12px;
+        margin: 0;
+        bottom:  10px;
+    }
+    .container {
+        width: 90%;
+        max-height: 490px;
+        margin: 10px auto;
+        padding: 0;
+    }
+    .language-form, .intent-selection {
+        text-align: center;
+    }
+    .language-selection select, .intent-selection select {
+        margin: 10px auto;
+        margin-top: 0;
+        padding: 0;
+        font-size: 12px;
+        outline: none;
+        width: 80%;
+        height: auto;
+    }
+    .language-title, .intent-title {
+        font-size: 12;
+    }
+    .language-selection, .intent-selection {
+        margin: 0 auto;
+        width: 80%;
+    }
+    input[type="text"] {
+        font-size: 12px;
+        margin: 0;
+    }
+    input[type="submit"] {
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .chat-container {
+        width: 90%;
+        margin: 10px auto;
+        font-size: 14px;
+        max-height: 240px;
+        overflow-y: auto;
+    }
+}
+
